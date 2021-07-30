@@ -9,7 +9,8 @@ functionnalities :
 
 The screens of the app are inspired from :
 - https://dribbble.com/shots/10761047-Sophie-Messaging-app-ui-kit
--https://www.youtube.com/watch?v=uiJF-ShOLyo
+
+- https://www.youtube.com/watch?v=uiJF-ShOLyo
 
 Some useful links i used :
 
