@@ -1,4 +1,4 @@
-import 'package:chat_app/views/profile/profile_view.dart';
+import 'package:chat_app/views/chat/chat_list_view.dart';
 import 'package:chat_app/views/welcome/welcome_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,7 +21,7 @@ class _LandingPageState extends State<LandingPage> {
           if (snapshot.connectionState == ConnectionState.active) {
             User user = snapshot.data;
             if (user != null) {
-              return ProfileScreen();
+              return ChatsListScreen();
             } else {
               return WelcomeScreen();
             }

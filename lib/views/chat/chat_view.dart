@@ -12,8 +12,10 @@ import 'package:provider/provider.dart';
 class ChatScreen extends StatefulWidget {
   final String userId;
   final String peerId;
+  final String idFrom;
+  final bool read;
   const ChatScreen(
-      {Key key, @required this.userId, @required this.peerId})
+      {Key key, @required this.userId, @required this.peerId, this.idFrom, this.read})
       : super(key: key);
 
   @override
@@ -22,6 +24,15 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final User user = FirebaseAuth.instance.currentUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.userId != widget.idFrom && !widget.read)
+      Database.updateLastMessageStatus(widget.userId, widget.peerId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +49,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 return ListView.builder(
                     itemCount: list.length,
                     itemBuilder: (context, index) => MessageContainer(
-                        userId: user.uid,
-                        message: list[index],
+                          userId: user.uid,
+                          message: list[index],
                         ));
               }
               return Center(child: CircularProgressIndicator());
@@ -79,7 +90,8 @@ class MessageContainer extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(FirebaseAuth.instance.currentUser.photoURL),
+                  backgroundImage:
+                      NetworkImage(FirebaseAuth.instance.currentUser.photoURL),
                 ),
                 SizedBox(
                   width: 10,
@@ -88,8 +100,8 @@ class MessageContainer extends StatelessWidget {
             ),
           Column(
             crossAxisAlignment: (HelperFunctions.isSender(userId, message))
-            ? CrossAxisAlignment.end
-            : CrossAxisAlignment.start,
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
             children: [
               Container(
                   padding: EdgeInsets.all(16),
@@ -115,8 +127,9 @@ class MessageContainer extends StatelessWidget {
                             ? Colors.white
                             : Colors.black),
                   )),
-                  SizedBox(height: 4),
-                  Text(HelperFunctions.messageTime(message.timestamp), style: TextStyle(fontSize: 12, color: Colors.grey))
+              SizedBox(height: 4),
+              Text(HelperFunctions.messageTime(message.timestamp),
+                  style: TextStyle(fontSize: 12, color: Colors.grey))
             ],
           ),
         ],
@@ -196,7 +209,9 @@ class ChatAppField extends StatelessWidget {
                                 .messageToSend,
                             idFrom: userId,
                             idTo: peerId,
-                            timestamp: Timestamp.fromDate(DateTime.now()).seconds.toString(),
+                            timestamp: Timestamp.fromDate(DateTime.now())
+                                .seconds
+                                .toString(),
                             read: true,
                           );
                           Database.sendMessage(conversation, userId, peerId);
@@ -234,12 +249,12 @@ AppBar buildAppBar() {
       IconButton(
           icon: Icon(Icons.call),
           onPressed: () {
-           // print("Call : ${chat.name}");
+            // print("Call : ${chat.name}");
           }),
       IconButton(
           icon: Icon(Icons.video_call_sharp),
           onPressed: () {
-        //    print("Video call: ${chat.name}");
+            //    print("Video call: ${chat.name}");
           }),
       IconButton(
           icon: Icon(Icons.info),

@@ -30,8 +30,8 @@ class Database {
       String userId) {
     var list = _db
         .collection('messages')
-        .where('users', arrayContains: userId)
         .orderBy('lastMessage.timestamp', descending: true)
+        .where('users', arrayContains: userId)
         .snapshots()
         .map((QuerySnapshot list) => list.docs
             .map((DocumentSnapshot snapshot) =>
@@ -111,7 +111,46 @@ class Database {
         }));
   }
 
-  static Future<UserModel> getUsers(String userId) {
-    
-  } 
+  static void updateMessageStatus(
+      String userId, String peerId, String idMessage) async {
+    String docId;
+    if (userId.hashCode > peerId.hashCode)
+      docId = userId + "_" + peerId;
+    else
+      docId = peerId + "_" + userId;
+
+    _db
+        .collection('messages')
+        .doc(docId)
+        .collection(docId)
+        .doc(idMessage)
+        .set(<String, dynamic>{'read': true}, SetOptions(merge: true));
+  }
+
+  static void updateLastMessageStatus(String userId, String peerId) {
+    String docId;
+    if (userId.hashCode > peerId.hashCode)
+      docId = userId + "_" + peerId;
+    else
+      docId = peerId + "_" + userId;
+
+    _db.collection("messages").doc(docId).set(<String, dynamic>{
+      "lastMessage": <String, dynamic>{'read': true},
+    }, SetOptions(merge: true));
+  }
+
+  static Stream<Conversation> getLastmessageOfConv(
+      String userId, String peerId) {
+    String docId;
+    if (userId.hashCode > peerId.hashCode)
+      docId = userId + "_" + peerId;
+    else
+      docId = peerId + "_" + userId;
+
+    return _db
+        .collection("messages")
+        .doc(docId)
+        .snapshots()
+        .map((list) => Conversation.fromMap(list.data()));
+  }
 }

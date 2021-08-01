@@ -199,6 +199,8 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
                                 time: HelperFunctions.lastMessageTime(
                                     list[index].lastMessage.timestamp),
                                 lastMessage: list[index].lastMessage.content,
+                                read: list[index].lastMessage.read,
+                                idFrom: list[index].lastMessage.idFrom,
                                 press: () {
                                   print(
                                       "Chating with ${chatsData[index].name}");
@@ -207,6 +209,9 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
                                             // chat: chatsData[index],
                                             userId: user.uid,
                                             peerId: peerId,
+                                            idFrom:
+                                                list[index].lastMessage.idFrom,
+                                            read: list[index].lastMessage.read,
                                           )));
                                 },
                               );
