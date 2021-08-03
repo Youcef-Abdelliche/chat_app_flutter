@@ -24,10 +24,23 @@ class _ChatsListScreenState extends State<ChatsListScreen> {
     FirebaseAuthService().signOut();
   }
 
+
   final User user = FirebaseAuth.instance.currentUser;
   int currentIndex = 1;
   int currentIndex2 = 0;
   PageController _pageController = PageController();
+
+  @override
+    void initState() {
+      // TODO: implement initState
+      super.initState();
+      Database.setActiveStatus(user.uid, true);
+    }
+    @override
+    void dispose(){
+      super.dispose();
+       Database.setActiveStatus(user.uid, false);
+    }
 
   @override
   Widget build(BuildContext context) {

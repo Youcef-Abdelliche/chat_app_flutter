@@ -153,4 +153,11 @@ class Database {
         .snapshots()
         .map((list) => Conversation.fromMap(list.data()));
   }
+
+  static setActiveStatus(String userId, bool isActive) {
+    print("User id: $userId");
+    _db.collection("users").doc(userId).set(<String, dynamic>{
+      "isActive": isActive,
+    }, SetOptions(merge: true));
+  }
 }

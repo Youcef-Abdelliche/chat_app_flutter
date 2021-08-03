@@ -15,7 +15,11 @@ class ChatScreen extends StatefulWidget {
   final String idFrom;
   final bool read;
   const ChatScreen(
-      {Key key, @required this.userId, @required this.peerId, this.idFrom, this.read})
+      {Key key,
+      @required this.userId,
+      @required this.peerId,
+      this.idFrom,
+      this.read})
       : super(key: key);
 
   @override
@@ -47,13 +51,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 var list = snapshot.data;
                 print(list.length);
                 return ListView.builder(
+                    reverse: true,
                     itemCount: list.length,
                     itemBuilder: (context, index) => MessageContainer(
                           userId: user.uid,
-                          message: list[index],
+                          message: list[list.length - index - 1],
                         ));
-              }
-              return Center(child: CircularProgressIndicator());
+              } else
+                return Center(child: CircularProgressIndicator());
             },
           )),
           ChatAppField(userId: widget.userId, peerId: widget.peerId)

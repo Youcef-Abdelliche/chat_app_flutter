@@ -4,11 +4,13 @@ class UserModel {
   final String id;
   final String name;
   final String email;
+  final bool isActive;
 
   UserModel({
     this.id,
     this.name,
     this.email,
+    this.isActive,
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class UserModel {
       'id': id,
       'name': name,
       'email': email,
+      'isActive': isActive,
     };
   }
 
@@ -24,6 +27,7 @@ class UserModel {
       id: map['id'],
       name: map['name'],
       email: map['email'],
+      isActive: map['isActive'],
     );
   }
 
