@@ -2,8 +2,11 @@
 
 A flutter app built with flutter and firebase,
 functionnalities :
+
 - Fetch the list of conversations and the last message of each conversation.
 - Select contact and send messages in real time.
+- Change active status whenever user enter or quit the app
+- Seen receipts functionnality
 
 ## Inspiration
 
